@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2023",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "incremental": false,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "outDir": "dist",
+    "baseUrl": "src",
+    "rootDir": "src",
+    "paths": {
+      "@config": ["./config"],
+      "@prisma": ["./prisma"],
+      "@modules": ["./modules"],
+      "@guards": ["./guards"],
+      "@dtos": ["./dtos"],
+      "@decorators": ["./decorators"],
+      "@enums": ["./enums"],
+      "@utils": ["./utils"],
+      "@services": ["./services"],
+      "@types": ["./types"],
+      "@interceptors": ["./interceptors"]
+    }
+  }
+}
