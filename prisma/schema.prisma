@@ -12,3 +12,117 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum GroupRole {
+  owner
+  admin
+  member
+}
+
+model Users {
+  id       String  @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  avatar   String? @map("avatar")
+  fullname String  @map("fullname") @db.VarChar(100)
+  email    String  @unique @map("email") @db.VarChar(150)
+  password String? @map("password") @db.VarChar(60)
+
+  providerId String? @map("provider_id") @db.VarChar(255)
+  provider   String? @map("provider") @db.VarChar(50)
+
+  sentRequests     Friends[]    @relation("UserFriends")
+  receivedRequests Friends[]    @relation("FriendUsers")
+  chatMembers      ChatMember[]
+  messages         Messages[]
+
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamp
+  updatedAt   DateTime      @updatedAt @map("updated_at") @db.Timestamp
+  MessageRead MessageRead[]
+
+  @@id([id])
+  @@map("users")
+}
+
+model Chat {
+  id      String  @default(dbgenerated("GEN_RANDOM_UUID()")) @db.Uuid
+  name    String? @map("name") @db.VarChar(150)
+  isGroup Boolean @default(false)
+
+  members  ChatMember[]
+  messages Messages[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp
+
+  @@id([id])
+  @@map("chats")
+}
+
+model ChatMember {
+  id     String    @default(dbgenerated("GEN_RANDOM_UUID()")) @db.Uuid
+  chatId String    @db.Uuid
+  userId String    @db.Uuid
+  role   GroupRole @default(member)
+
+  chat Chat  @relation(fields: [chatId], references: [id])
+  user Users @relation(fields: [userId], references: [id])
+
+  joinedAt DateTime @default(now())
+
+  @@id([id])
+  @@unique([chatId, userId])
+  @@map("chat_members")
+}
+
+model Messages {
+  id       String @default(dbgenerated("GEN_RANDOM_UUID()")) @db.Uuid
+  chatId   String @db.Uuid
+  senderId String @db.Uuid
+  content  String @db.Text
+
+  replyToId String?
+  replyTo   Messages?  @relation("MessageReplies", fields: [replyToId], references: [id])
+  replies   Messages[] @relation("MessageReplies")
+
+  chat   Chat          @relation(fields: [chatId], references: [id])
+  sender Users         @relation(fields: [senderId], references: [id])
+  reads  MessageRead[]
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp
+
+  @@id([id])
+  @@map("messages")
+}
+
+model MessageRead {
+  id        String   @default(dbgenerated("GEN_RANDOM_UUID()")) @db.Uuid
+  messageId String   @db.Uuid
+  userId    String   @db.Uuid
+  readAt    DateTime @default(now())
+
+  message Messages @relation(fields: [messageId], references: [id])
+  user    Users    @relation(fields: [userId], references: [id])
+
+  @@id([id])
+  @@unique([messageId, userId])
+  @@map("message_reads")
+}
+
+model Friends {
+  id String @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+
+  userId   String @db.Uuid
+  friendId String @db.Uuid
+
+  user   Users @relation("UserFriends", fields: [userId], references: [id])
+  friend Users @relation("FriendUsers", fields: [friendId], references: [id])
+
+  status String @default("pending") @db.VarChar(20)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamp
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamp
+
+  @@id([id])
+  @@unique([userId, friendId])
+  @@map("friends")
+}

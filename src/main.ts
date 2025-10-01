@@ -1,4 +1,4 @@
-import { AppConfigOptions, appConfig } from '@config';
+import { AppConfigOptions } from '@config';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
