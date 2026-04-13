@@ -1,16 +1,15 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
+
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  @Post()
-  create() {}
+  constructor(private readonly userService: UsersService) {}
+  @Get('me')
+  getProfile(@) {
+    // return this.userService
+  }
 
-  @Get()
-  findAll() {}
-
-  @Put('/:id')
-  update() {}
-
-  @Delete('/:id')
-  delete() {}
+  @Get('search')
+  searchUsers(@Query() username) {}
 }

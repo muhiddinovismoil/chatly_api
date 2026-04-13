@@ -1,12 +1,14 @@
-import { AppConfigOptions } from '@config';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as compression from 'compression';
-import * as basicAuth from 'express-basic-auth';
+
+import { AppConfigOptions } from '@config';
+import compression from 'compression';
 
 import { AppModule } from './app';
+
+import basicAuth = require('express-basic-auth');
 
 const logger = new Logger('MAIN');
 
@@ -52,19 +54,15 @@ async function bootstrap() {
   });
 
   await app.listen(appConfig.port, () => {
-    console.log(
-      `Server is running on http://${appConfig.host}:${appConfig.port}`,
-    );
+    console.log(`Server is running on http://${appConfig.host}:${appConfig.port}`);
 
-    console.log(
-      `Swagger route: http://${appConfig.host}:${appConfig.port}/api/docs`,
-    );
+    console.log(`Swagger route: http://${appConfig.host}:${appConfig.port}/api/docs`);
   });
 }
 
 bootstrap()
   .then(() => {
-    logger.log(`S/erver is running on port: ${process.env.APP_PORT}`);
+    logger.log(`Server is running on port: ${process.env.APP_PORT}`);
   })
   .catch((err) => {
     logger.error(`Error is occured during initialization the server: [${err}]`);

@@ -7,19 +7,4 @@ export class AuthController {
 
   @Post('signin')
   signin() {}
-
-  @Post('google')
-  googleAuth() {}
-
-  @Post('otp/verify')
-  verifyOtp() {}
-
-  @Post('otp/resend')
-  resendOtp() {}
-
-  @Post('2fa/enable')
-  enableTwoFactorAuth() {}
-
-  @Post('2fa/disable')
-  disableTwoFactorAuth() {}
 }
