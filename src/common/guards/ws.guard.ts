@@ -12,8 +12,7 @@ export class WsJwtGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const client = context.switchToWs().getClient();
-    const token =
-      client.handshake?.auth?.token || client.handshake?.query?.token;
+    const token = client.handshake?.auth?.token || client.handshake?.query?.token;
 
     if (!token) {
       throw new WsException('Token not found');
@@ -25,7 +24,10 @@ export class WsJwtGuard implements CanActivate {
       client.user = payload;
       return true;
     } catch (e) {
-      throw new WsException(e.message || 'Invalid token');
+      if (e instanceof Error) {
+        throw new WsException(e.message || 'Invalid token');
+      }
+      throw new WsException('Invalid token');
     }
   }
 }

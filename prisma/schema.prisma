@@ -48,19 +48,8 @@ model User {
   sent_friends     Friend[] @relation("sent")
   received_friends Friend[] @relation("received")
 
-  otp_codes    OTP[]
   backup_codes BackupCode[]
   messageReads MessageRead[]
-}
-
-model OTP {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String   @db.Uuid
-  code       String
-  expires_at DateTime
-  created_at DateTime @default(now())
-
-  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model BackupCode {

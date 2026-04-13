@@ -1,6 +1,7 @@
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 import { appConfig, cacheConfig, CacheConfigOptions, databaseConfig } from '@config';
 import { AuthModule, UsersModule } from '@modules';
@@ -34,6 +35,8 @@ import { redisStore } from 'cache-manager-redis-store';
       },
       inject: [ConfigService],
     }),
+
+    JwtModule.register({ global: true }),
 
     PrismaModule,
     AuthModule,
