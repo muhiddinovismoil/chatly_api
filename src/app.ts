@@ -7,11 +7,12 @@ import { appConfig, cacheConfig, CacheConfigOptions, databaseConfig } from '@con
 import { AuthModule, UsersModule } from '@modules';
 import { PrismaModule } from '@prisma';
 import { redisStore } from 'cache-manager-redis-store';
+import { jwtConfig } from 'config/jwt.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [appConfig, databaseConfig, cacheConfig],
+      load: [appConfig, databaseConfig, cacheConfig, jwtConfig],
       isGlobal: true,
     }),
     CacheModule.registerAsync({

@@ -1,6 +1,6 @@
 import { Controller, Post } from '@nestjs/common';
 
-@Controller('otp')
+@Controller('auth/otp')
 export class OtpController {
   @Post('verify')
   verifyOtp() {}

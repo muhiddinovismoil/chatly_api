@@ -11,10 +11,4 @@ export class AuthController {
 
   @Post('signin')
   signin() {}
-
-  @Get('google/callback')
-  @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() req) {
-    return this.authService.googleLogin(req.user);
-  }
 }

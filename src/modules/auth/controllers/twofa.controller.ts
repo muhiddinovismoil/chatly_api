@@ -1,6 +1,6 @@
 import { Controller, Post } from '@nestjs/common';
 
-@Controller('twofa')
+@Controller('auth/twofa')
 export class TwoFaController {
   @Post('enable')
   enableTwoFactorAuth() {}
